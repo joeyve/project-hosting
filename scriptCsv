@@ -1,0 +1,16 @@
+while IFS=, read -r naam wachtwoord
+do
+	username=$naam
+	paswoord=$wachtwoord
+	egrep "^$username" /etc/passwd >/dev/null
+	if [$? -eq 0] ; then
+		echo "$username bestaat al!"
+		exit 1
+	else
+		pass=$(perl -e 'print crypt($ARGV[0], "password")' $paswoord)
+		useradd -m -p $pass $username
+		[ $? -eq 0  ] && echo "User '$username' is toegevoegd" || echo "User $username toevoegen mislukt"
+		mkdir /home/kobe/project-hosting/www/$username
+		usermod --home /home/kobe/docker-lamp/www/$username $username
+	fi
+done < csv.csv
