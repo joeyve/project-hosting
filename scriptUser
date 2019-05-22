@@ -8,10 +8,12 @@ if [ $(id -u) -eq 0 ]; then
 	else
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $paswoord)
 		useradd -m -p $pass $username
-		[ $? -eq 0 ] && echo "User $username is toegevoegd!" || echo "User $username toevoegen mislukt"
-		mkdir /home/kobe/project-hosting/www/$username $username
-		usermod --home /home/kobe/project-hosting/www/$username $username
-		fi
+		[ $? -eq 0 ]  && echo "User is toegevoegd" || "User toevoegen mislukt"
+	mkdir /home/project-hosting/project-hosting/www/$username
+	chown $username /home/project-hosting/project-hosting/www/$username
+	usermod --home /home/project-hosting/project-hosting/www/$username $username 
+	usermod -a -G studenten $username
+	fi
 else
 	echo "Alleen root mag users in het systeem toevoegen"
 	exit 2

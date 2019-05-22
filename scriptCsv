@@ -10,7 +10,9 @@ do
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $paswoord)
 		useradd -m -p $pass $username
 		[ $? -eq 0  ] && echo "User '$username' is toegevoegd" || echo "User $username toevoegen mislukt"
-		mkdir /home/kobe/project-hosting/www/$username
-		usermod --home /home/kobe/docker-lamp/www/$username $username
+		mkdir /home/project-hosting/project-hosting/www/$username
+		chown /home/project-hosting/project-hosting/www/$username $username
+		usermod --home /home/project-hosting/project-hosting/www/$username $username
+		sudo usermod -a -G studenten $username
 	fi
 done < csv.csv
